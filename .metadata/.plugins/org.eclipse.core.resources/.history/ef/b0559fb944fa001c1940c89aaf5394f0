@@ -1,0 +1,72 @@
+package com.greatlearning.crm.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.greatlearning.crm.model.Customer;
+import com.greatlearning.crm.service.CustomerService;
+
+@Controller
+@RequestMapping("/customer")
+public class CustomerController {
+	@Autowired
+	private CustomerService customerService;
+
+	@RequestMapping("/list")
+	public String list(Model theModel) {
+		System.out.println("Request Received");
+		List<Customer> theCustomers = customerService.findAll();
+		theModel.addAttribute("Customer", theCustomers);
+		return "customer-list";
+	}
+
+	@RequestMapping("/showFormForAdd")
+	public String showFormForAdd(Model theModel) {
+		Customer theCustomer = new Customer();
+		theModel.addAttribute("Customer", theCustomer);
+		return "customer-form";
+
+	}
+
+	@RequestMapping("/showFormForUpdate")
+	public String showFormForUpdate(@RequestParam("cusotmerId") int id, Model theModel) {
+		Customer theCustomer = customerService.findById(id);
+		theModel.addAttribute("Customer", theCustomer);
+		return "customer-form";
+	}
+
+	@PostMapping("/save")
+	public String save(@RequestParam("id") int id, @RequestParam("firstName") String firstName,
+			@RequestParam("lastName") String lastName, @RequestParam("eMail") String eMail) {
+		System.out.println(id);
+		Customer theCustomer;
+		if (id != 0) {
+			theCustomer = customerService.findById(id);
+			theCustomer.setFirstName(firstName);
+			theCustomer.setLastName(lastName);
+			theCustomer.seteMail(eMail);
+
+		} else {
+			theCustomer = new Customer(firstName, lastName, eMail);
+		}
+
+		customerService.save(theCustomer);
+
+		return "redirect:/customer/list";
+
+	}
+
+	@RequestMapping("/deleteById")
+	public String delete(@RequestParam("customerId") int theId) {
+		System.out.println(theId);
+		customerService.deleteById(theId);
+		return "redirect:/customer/list";
+
+	}
+}

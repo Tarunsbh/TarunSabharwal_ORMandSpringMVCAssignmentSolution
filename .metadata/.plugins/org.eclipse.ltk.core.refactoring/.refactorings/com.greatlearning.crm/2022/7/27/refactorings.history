@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move &apos;CustomerRepository.java&apos; to &apos;repository&apos;" description="Move &apos;CustomerRepository.java&apos; to &apos;repository&apos;" destination="src/main/java/com/greatlearning/crm/repository" element1="src/main/java/com/greatlearning/crm/service/CustomerRepository.java" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="1" stamp="1656764534880" updateReferences="true"/>
+</session>
